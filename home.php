@@ -1,4 +1,5 @@
 <?php
+    session_start();
     $arrProducts= array(
         array(
             'name'        => "Brown Shirt",
@@ -69,7 +70,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
    <link rel="stylesheet" href="css/shopcart.css">
-    <title>Document</title>
+    <title>Learn IT Easy Online Shop | Product</title>
 </head>
 <body>
     <div class="container pt-5">
@@ -79,34 +80,41 @@
                 </div>
                 <div class="col-mid-1 text-right">
                     <a href="" class="btn btn-primary">
-                    <i class="fa-solid fa-cart-shopping"></i>Cart<span class="badge badge-light">0</span>
+                    <i class="fa-solid fa-cart-shopping"></i>Cart <span class="badge badge-light">0</span>
                     </a>
                 </div>
             </div>
-    <hr>
-    <div class="row mt-3">
-        <?php if (isset($arrProducts)) : ?>
-            <?php  foreach ($arrProducts as $product => $prodValue) { ?>
-            
-                        <div class="col-md-3 col-sm-6">
-                            <div class="product-grid2">
-                                <div class="product-image2">
-                                    <a href="#">
-                                        <img class="pic-1" src="img/<?php echo $prodValue['photo1'];?>">
-                                        <img class="pic-2" src="img/<?php echo $prodValue['photo2'];?>">
-                                    </a>
-                                    <a class="add-to-cart" href="">Add to cart</a>
-                                </div>
-                                <div class="product-content">
-                                    <h3 class="title"><?php echo $prodValue['name'] . ' ';?><span span class="badge badge-dark"> <?php echo '₱ ' . $prodValue['price'];?></span></h3>
-
-                                </div>
-                            </div>  
-                        </div>                
-            <?php }?>          
-        <?php endif; ?>
-    </div>  
-</div>
+        <hr>
+        <div class="row mt-3">
+            <?php if (isset($arrProducts)) : ?>
+                <?php  foreach ($arrProducts as $product => $prodValue) { ?>
+                            <div class="col-md-3 col-sm-6">
+                                <div class="product-grid2">
+                                    <div class="product-image2">
+                                        <a href="details.php?pid=<?php echo $product?>">
+                                            <img class="pic-1" src="img/<?php echo $prodValue['photo1'];?>">
+                                            <img class="pic-2" src="img/<?php echo $prodValue['photo2'];?>">
+                                        </a>
+                                        <a class="add-to-cart" href="details.php?pid=<?php echo $product?>">Add to cart</a>
+                                    </div>
+                                    <div class="product-content">
+                                        <h3 class="title"><?php echo $prodValue['name'] . ' ';?>
+                                            <span span class="badge badge-dark"> <?php echo '₱ ' . $prodValue['price'];?></span>
+                                        </h3>
+                                    </div>
+                                </div>  
+                            </div> 
+                            <?php
+                            $_SESSION['product'][$product]['name'] = $arrProducts[$product]['name'];
+                            $_SESSION['product'][$product]['price'] = $arrProducts[$product]['price'];
+                            $_SESSION['product'][$product]['description'] = $arrProducts[$product]['description'];
+                            $_SESSION['product'][$product]['photo1'] = $arrProducts[$product]['photo1'];
+                            $_SESSION['product'][$product]['photo2'] = $arrProducts[$product]['photo2'];
+                             ?>               
+                <?php }?>          
+            <?php endif; ?>
+        </div>  
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
