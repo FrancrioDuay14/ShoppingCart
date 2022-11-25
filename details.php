@@ -1,6 +1,18 @@
 <?php
     session_start();
-    $arrSizes = array('XS', 'SM', 'MD', 'LG', 'XL');
+    require_once("products.php");
+    if(isset($_POST['btnProcess'])) {
+
+
+        if(isset($_SESSION['cartItems'][$_POST['hdnKey']][$_POST['radSize']]))
+            $_SESSION['cartItems'][$_POST['hdnKey']][$_POST['radSize']] += $_POST['txtQuantity']; 
+        else
+            $_SESSION['cartItems'][$_POST['hdnKey']][$_POST['radSize']] = $_POST['txtQuantity']; 
+
+        
+        $_SESSION['totalQuantity'] += $_POST['txtQuantity'];
+        header("location:confirm.php");
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,39 +32,46 @@
                     <h1><i class="fa-brands fa-shopify"></i>Learn IT Easy Online Shop</h1>
                 </div>
                 <div class="col-mid-1 text-right">
-                    <a href="" class="btn btn-primary">
-                    <i class="fa-solid fa-cart-shopping"></i>Cart <span class="badge badge-light">0</span>
+                    <a href="cart.php" class="btn btn-primary">
+                    <i class="fa-solid fa-cart-shopping"></i>Cart <span class="badge badge-light">
+                    <?php echo (isset($_SESSION['totalQuantity']) ? $_SESSION['totalQuantity'] : "0"); ?>
+                    </span>
                     </a>
                 </div>
             </div>
         <hr>
-        <form action="" method="get">
+        <form action="" method="post">
         <div class="row">
-            <?php if(isset($_GET['pid']) && isset($_SESSION['product'][$_GET['pid']])) : ?>
+            <?php if(isset($_GET['k']) && isset($arrProducts[$_GET['k']])) : ?>
                     <div class="col-md-4 col-sm-6 mb-4">
                         <div class="product-grid2 card">
                             <div class="product-image2">
                                 <a href="">
-                                    <img class="pic-1" src="img/<?php echo $_SESSION['product'][$_GET['pid']]['photo1']; ?>">
-                                    <img class="pic-2" src="img/<?php echo $_SESSION['product'][$_GET['pid']]['photo2']; ?>">
+                                    <img class="pic-1" src="img/<?php echo $arrProducts[$_GET['k']]['photo1']; ?>">
+                                    <img class="pic-2" src="img/<?php echo $arrProducts[$_GET['k']]['photo1']; ?>">
                                 </a>                            
                             </div>                        
                         </div>
                     </div>         
                     <div class="col-md-8">
-                        <h3><?php echo $_SESSION['product'][$_GET['pid']]['name'];?>
-                            <span span class="badge badge-dark"><?php echo '₱ ' . $_SESSION['product'][$_GET['pid']]['price'];?></span>
+                        <h3><?php echo $arrProducts[$_GET['k']]['name'];?>
+                            <span span class="badge badge-dark"><?php echo '₱ ' . $arrProducts[$_GET['k']]['price'];?></span>
                         </h3>
-                         <p><?php echo $_SESSION['product'][$_GET['pid']]['description'];?></p>
+                         <p><?php echo $arrProducts[$_GET['k']]['description'];?></p>
                          <hr>
+                         <input type="hidden" name="hdnKey" value="<?php echo $_GET['k']; ?>">
                         <h3 class="title">Select Size:</h3>
-                            <?php if(isset($arrSizes)) :?>
-                                <?php foreach ($arrSizes as $size) { ?>    
-                                    <input type="radio" name="radSize" id="<?php echo $size;?>" value="<?php echo $size;?>">
-                                    <label for="<?php echo $size;?>" class="pr-3"><?php echo $size;?></label>
-                                <?php }?>
-                            <?php endif;?>                
-                        <hr>
+                        <input type="radio" name="radSize" id="radXS" value="XS" checked>
+                        <label for="radXS" class="pr-3">XS</label>
+                        <input type="radio" name="radSize" id="radSM" value="SM">
+                        <label for="radSM" class="pr-3">SM</label>
+                        <input type="radio" name="radSize" id="radMD" value="MD">
+                        <label for="radMD" class="pr-3">MD</label>
+                        <input type="radio" name="radSize" id="radLG" value="LG">
+                        <label for="radLG" class="pr-3">LG</label>
+                        <input type="radio" name="radSize" id="radXL" value="XL">
+                        <label for="radXL" class="pr-3">XL</label>                        
+                        <hr>      
                         <h3 class="title">Enter Quantity:</h3>
                         <input type="number" name="txtQuantity" id="txtQuantity" class="form-control" placeholder="0" min="1" max="100" required>
                         <br>
@@ -60,7 +79,7 @@
                         <a href="index.php" class="btn btn-danger btn-lg"><i class="fa fa-arrow-left"></i> Cancel / Go Back</a>
                     </div>
             <?php endif; ?>
-         </form>
+         </form>                 
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
